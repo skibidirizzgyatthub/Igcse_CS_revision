@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10a37f">
+<title>IGCSE Computer Science with Python</title>
+<style>
+:root{
+  --bg:#ffffff;--card:#ffffff;--ink:#202123;--mute:#6b7280;--line:#e5e7eb;
+  --acc:#10a37f;--onacc:#fff;--acc2:#f0fdf9;--sidebar:#f7f7f8;
+  --code:#111827;--codeink:#e5e7eb;--warn:#fff7ed;--warnl:#9a3412;
+  --shadow:0 1px 2px rgba(0,0,0,.04);
+}
+:root[data-theme=dark]{
+  --bg:#212121;--card:#2a2a2a;--ink:#ececec;--mute:#a1a1aa;--line:#3f3f46;
+  --acc:#19c37d;--onacc:#fff;--acc2:#303b37;--sidebar:#171717;
+  --code:#171717;--codeink:#e5e7eb;--warn:#33291f;--warnl:#fdba74;
+  --shadow:0 1px 2px rgba(0,0,0,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;display:flex}
+#side{width:272px;flex:none;background:var(--sidebar);border-right:1px solid var(--line);padding:12px 10px;position:sticky;top:0;height:100vh;overflow:auto;scrollbar-width:thin}
+#side.hide{display:none}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:2px 2px 10px 12px}
+.side-head strong{font-size:14px;letter-spacing:.1px;font-weight:650}
+#side h3{margin:20px 10px 7px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);font-weight:600}
+#side a{display:block;color:var(--ink);text-decoration:none;padding:7px 10px;margin:1px 0;border-radius:8px;font-size:13px;line-height:1.35;transition:background .15s ease,color .15s ease,transform .15s ease}
+#side a:hover{background:var(--line);transform:translateX(1px)}
+#side a:focus-visible{background:var(--acc2)}
+main{flex:1;max-width:980px;margin:0 auto;padding:18px 34px 70px;min-width:0}
+.bar{display:flex;gap:7px;margin-bottom:28px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:5;padding:10px 0;background:linear-gradient(var(--bg) 75%,transparent)}
+.iconbtn{width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--mute);cursor:pointer;box-shadow:none;transition:background .15s ease,color .15s ease}
+.iconbtn:hover{background:var(--line);color:var(--ink);border-color:transparent}
+.iconbtn svg{display:block}
+button,.btn{font:inherit;font-size:13px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 11px;cursor:pointer;text-decoration:none;transition:all .15s ease;box-shadow:var(--shadow)}
+button:hover,.btn:hover{border-color:#a1a1aa;background:var(--sidebar)}
+button.p{background:var(--acc);color:var(--onacc);border-color:var(--acc);font-weight:600}
+button.p:hover{filter:brightness(.95)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.settings-wrap{position:relative}
+.settings{position:absolute;top:calc(100% + 8px);left:0;z-index:40;width:280px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 15px 15px;box-shadow:0 16px 40px rgba(0,0,0,.20);animation:setIn .18s ease}
+@keyframes setIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.settings[hidden]{display:none}
+.set-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);font-weight:600;margin-bottom:12px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.set-sep{height:1px;background:var(--line);margin:14px 0}
+.set-label{font-size:12.5px;color:var(--mute);margin:0 0 9px}
+.toggle{position:relative;display:inline-block;width:44px;height:24px;flex:none}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle .slider{position:absolute;inset:0;background:var(--line);border-radius:99px;cursor:pointer;transition:background .2s ease}
+.toggle .slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.toggle input:checked + .slider{background:var(--acc)}
+.toggle input:checked + .slider:before{transform:translateX(20px)}
+.sw{display:flex;gap:6px;flex-wrap:wrap}
+.sw button{width:26px;height:26px;padding:0;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.sw button:hover{transform:scale(1.1)}
+.cust{font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:7px}
+#pick{width:34px;height:28px;padding:0;border:1px solid var(--line);border-radius:7px;background:none;vertical-align:middle;cursor:pointer}
+.resetbtn{font-size:12px;padding:6px 11px;border-radius:8px;background:var(--bg);color:var(--mute);border:1px solid var(--line);box-shadow:none}
+.resetbtn:hover{color:var(--ink);background:var(--sidebar)}
+.pill{font-size:12px;padding:5px 11px;border-radius:99px;background:var(--acc2);color:var(--acc);font-weight:600;border:1px solid color-mix(in srgb,var(--acc) 25%,transparent);white-space:nowrap}
+.pill.urgent{background:rgba(220,38,38,.10);color:#dc2626;border-color:rgba(220,38,38,.3)}
+.pomo{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:5px 10px;border-radius:9px;background:var(--card);border:1px solid var(--line);cursor:pointer;box-shadow:var(--shadow)}
+.pomo b{font-variant-numeric:tabular-nums;font-weight:600;min-width:44px;text-align:center}
+.pomo.running{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.pomo.break.running{background:#ea580c;border-color:#ea580c}
+.pomo button{background:transparent;border:none;padding:0 4px;color:inherit;cursor:pointer;font-size:13px;box-shadow:none}
+h1{font-size:2.05rem;line-height:1.15;letter-spacing:-.035em;margin:.2em 0 .3em}
+.sub{color:var(--mute);margin:0 0 8px}
+#count{font-size:13px;color:var(--mute);margin-top:14px}
+.prog{height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin:7px 0 30px}
+.prog i{display:block;height:100%;background:var(--acc);width:0;transition:width .4s ease}
+section.t{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin:0 0 16px;box-shadow:var(--shadow);scroll-margin-top:70px;transition:border-color .2s ease,box-shadow .2s ease}
+section.t:hover{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+section.t.done{border-color:var(--acc)}
+section.t h2{margin:0 0 13px;font-size:1.2rem;line-height:1.35;letter-spacing:-.01em}
+ul{padding-left:21px}
+li{margin:5px 0}
+h4{margin:19px 0 7px;font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+pre,textarea.c{background:var(--code);color:var(--codeink);border-radius:9px;padding:14px;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:auto;margin:0;white-space:pre}
+textarea.c{width:100%;min-height:160px;resize:vertical;border:0;tab-size:4}
+.out{background:#050505;color:#9ff0c4;font:13px ui-monospace,SFMono-Regular,Menlo,monospace;padding:9px 13px;border-radius:0 0 9px 9px;white-space:pre-wrap;min-height:20px;display:none}
+.row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.mist{background:var(--warn);color:var(--warnl);border:1px solid color-mix(in srgb,var(--warnl) 18%,transparent);border-radius:9px;padding:9px 12px;margin:14px 0;font-size:13px}
+.notes{width:100%;min-height:74px;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:10px;resize:vertical;transition:border-color .15s ease,box-shadow .15s ease}
+.notes:focus{border-color:var(--acc);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc) 15%,transparent);outline:0}
+.links{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.links a{font-size:12px;color:var(--acc);border:1px solid var(--line);border-radius:999px;padding:4px 10px;text-decoration:none;background:var(--bg);transition:all .15s ease}
+.links a:hover{background:var(--acc2);border-color:var(--acc)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.panel h2{margin:0 0 9px;font-size:1.05rem}
+.panel input{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 9px;outline:none}
+.panel input:focus{border-color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.grid a{display:block;border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--ink);text-decoration:none;transition:all .15s ease}
+.grid a:hover{border-color:var(--acc);background:var(--acc2);transform:translateY(-1px)}
+.grid small{display:block;color:var(--mute);font-size:11px;margin-top:2px}
+.topic-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.topic-actions .badge{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--acc2);color:var(--acc);font-weight:600}
+.topic-actions .badge.warn{background:rgba(220,38,38,.10);color:#dc2626}
+.topic-actions .badge.done{background:var(--acc);color:var(--onacc)}
+details.pan{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden}
+details.pan summary{padding:15px 20px;cursor:pointer;font-weight:600;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.pan summary::-webkit-details-marker{display:none}
+details.pan summary:after{content:"▸";transition:transform .2s;color:var(--mute);font-size:13px}
+details.pan[open] summary:after{transform:rotate(90deg)}
+details.pan .pan-body{padding:0 20px 18px}
+.cwlist,.frm,.glz{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.cwlist>div,.frm>div,.glz>div{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--bg)}
+.cwlist b{display:block;font-size:13px;margin-bottom:3px;color:var(--acc)}
+.cwlist small{color:var(--mute);font-size:11.5px;line-height:1.45;display:block}
+.frm b{display:block;font-size:12.5px;color:var(--mute);margin-bottom:5px;font-weight:600}
+.frm code{font:12.5px ui-monospace,Menlo,Consolas,monospace;background:var(--code);color:var(--codeink);padding:4px 8px;border-radius:6px;display:inline-block;word-break:break-word}
+.glz{max-height:400px;overflow:auto;padding-right:4px}
+.glz b{display:block;font-size:12.5px;color:var(--acc);margin-bottom:3px}
+.glz small{color:var(--mute);font-size:11.5px;line-height:1.45}
+#gsearch{width:100%;margin-bottom:10px;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 11px;outline:none}
+#gsearch:focus{border-color:var(--acc)}
+.streak{font-size:12px;color:var(--mute)}
+.streak b{color:var(--acc);font-weight:700}
+.modal,.modal2{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(10,12,16,.55);backdrop-filter:blur(5px)}
+.modal{z-index:60}
+.modal2{z-index:70;background:rgba(10,12,16,.62)}
+.modal.open,.modal2.open{display:flex;animation:mFade .28s ease}
+@keyframes mFade{from{opacity:0}to{opacity:1}}
+.modal .box,.modal2 .box2{position:relative;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:15px;width:100%;max-height:88vh;overflow:auto;padding:26px 26px 22px;box-shadow:0 26px 70px rgba(0,0,0,.42);animation:mPop .32s cubic-bezier(.2,.9,.3,1.25)}
+.modal .box{max-width:920px;padding:28px 28px 22px}
+.modal2 .box2{max-width:660px}
+@keyframes mPop{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.modal .x,.modal2 .x2{position:absolute;top:12px;right:14px;width:34px;height:34px;padding:0;border-radius:50%;font-size:19px;line-height:1;border:1px solid var(--line);background:var(--bg);color:var(--mute)}
+.modal .x:hover,.modal2 .x2:hover{color:var(--ink);background:var(--sidebar)}
+.modal h2,.modal2 h3{margin:0 0 6px;font-size:1.35rem;letter-spacing:-.02em}
+.modal2 h3{font-size:1.1rem}
+.modal .lead,.modal2 .lead{margin:0 0 20px;color:var(--mute);font-size:13.5px;line-height:1.6}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:10px}
+.rgrid a{display:block;border:1px solid var(--line);border-radius:11px;padding:12px 13px;text-decoration:none;color:var(--ink);background:var(--bg);transition:all .16s ease}
+.rgrid a:hover{border-color:var(--acc);background:var(--acc2);transform:translateY(-2px)}
+.rgrid b{display:block;font-size:13.5px;line-height:1.3}
+.rgrid small{display:block;color:var(--mute);font-size:11.5px;margin-top:4px;line-height:1.45}
+.rgrid em{display:inline-block;margin-top:8px;font-style:normal;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--acc2);color:var(--acc)}
+:root[data-theme=dark] .rgrid em{background:rgba(25,195,125,.15)}
+.modal .foot,.modal2 .foot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);display:flex;gap:9px;flex-wrap:wrap}
+.modal .foot .btn{flex:1 1 auto;text-align:center;font-weight:600;padding:10px 16px}
+.modal .foot .btn.p{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.modal2 .foot button{flex:1 1 auto;padding:10px;font-weight:600}
+.fc{perspective:1200px;margin:8px 0}
+.fc-inner{position:relative;min-height:220px;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+.fc.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;border-radius:13px;font-size:1.05rem;line-height:1.5}
+.fc-front{background:var(--acc2);color:var(--ink);border:1px solid var(--line)}
+.fc-back{background:var(--acc);color:var(--onacc);transform:rotateY(180deg)}
+.q{margin:16px 0;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.q p{font-weight:600;margin:0 0 9px;font-size:13.5px}
+.q .opt{display:block;width:100%;text-align:left;margin:5px 0;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--card);cursor:pointer;font-size:13px;transition:all .15s;box-shadow:none}
+.q .opt:hover{border-color:var(--acc)}
+.q .opt.sel{border-color:var(--acc);background:var(--acc2)}
+.q .opt.right{border-color:#16a34a;background:rgba(22,163,74,.12);color:var(--ink)}
+.q .opt.wrong{border-color:#dc2626;background:rgba(220,38,38,.10);color:var(--ink)}
+.q .why{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.5}
+.q .why b{color:var(--acc)}
+#kbd{position:fixed;bottom:16px;right:16px;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:none;max-width:280px}
+#kbd.open{display:block;animation:mPop .25s ease}
+#kbd b{display:inline-block;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:ui-monospace,monospace;font-size:11px;margin-right:6px}
+#kbd div{margin:4px 0;color:var(--mute)}
+#kbd div span{color:var(--ink)}
+@media(max-width:800px){
+  body{display:block}
+  #side{position:fixed;z-index:20;width:280px;height:100vh;box-shadow:8px 0 25px rgba(0,0,0,.12)}
+  #side.hide{display:none}
+  main{padding:12px 16px 50px}
+  .bar{margin-bottom:20px;gap:6px}
+  section.t{padding:20px 18px}
+  h1{font-size:1.75rem}
+  .modal,.modal2{padding:10px}
+  .modal .box{padding:22px 18px 18px;max-height:92vh}
+  .settings{width:min(280px,calc(100vw - 40px))}
+}
+@media print{
+  #side,.bar,.modal,.modal2,.topic-actions,.links,#kbd,details.pan,.panel{display:none !important}
+  body{display:block;background:#fff;color:#000}
+  main{padding:0;max-width:100%}
+  section.t{break-inside:avoid;box-shadow:none;border:1px solid #ccc;margin-bottom:14px}
+  section.t h2{font-size:16pt}
+  pre{background:#f5f5f5;color:#111;border:1px solid #ddd}
+  textarea.c{background:#f5f5f5;color:#111;border:1px solid #ddd;min-height:auto;height:auto;overflow:visible}
+  .out{display:none}
+  .notes{border:1px solid #ccc;background:#fff;color:#000}
+  .mist{background:#fff7ed;color:#7c2d12;border:1px solid #fdba74}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<nav id="side" aria-label="Topics index">
+  <div class="side-head">
+    <strong>Topics index</strong>
+    <button id="tside" class="iconbtn" title="Hide sidebar" aria-label="Hide sidebar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+    </button>
+  </div>
+  <div id="idx"></div>
+  <h3>Study links</h3>
+  <div id="sidelinks"></div>
+  <h3>Progress</h3>
+  <div style="padding:4px 10px"><div class="streak">🔥 Streak: <b id="streakTxt">0</b> days</div><div class="streak">⏱ Focus sessions: <b id="focusTxt">0</b></div></div>
+</nav>
+
+<main>
+  <div class="bar">
+    <button id="openside" class="iconbtn" hidden title="Show sidebar" aria-label="Show sidebar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+    </button>
+
+    <div class="settings-wrap">
+      <button id="tgear" class="iconbtn" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <div class="settings" id="settings" hidden role="dialog" aria-label="Settings">
+        <div class="set-title">Settings</div>
+        <div class="set-row"><span style="font-size:13.5px">Dark mode</span>
+          <label class="toggle"><input type="checkbox" id="darkToggle" aria-label="Dark mode"><span class="slider"></span></label>
+        </div>
+        <div class="set-sep"></div>
+        <div class="set-label">Accent colour</div>
+        <div class="sw" id="sw" role="group" aria-label="Accent colour"></div>
+        <div class="set-row" style="margin-top:12px">
+          <label class="cust">Custom <input type="color" id="pick" value="#2563eb"></label>
+          <button id="resetc" class="resetbtn">Reset</button>
+        </div>
+        <div class="set-sep"></div>
+        <div class="set-label">Progress</div>
+        <div style="display:flex;gap:8px">
+          <button id="expBtn" class="resetbtn" style="flex:1">⬇ Export</button>
+          <button id="impBtn" class="resetbtn" style="flex:1">⬆ Import</button>
+        </div>
+        <input type="file" id="impFile" accept=".json" hidden>
+        <div class="set-sep"></div>
+        <div style="font-size:12px;color:var(--mute)">Press <b style="font-family:monospace">?</b> for keyboard shortcuts</div>
+      </div>
+    </div>
+
+    <div class="pomo" id="pomo" role="button" tabindex="0" title="Pomodoro timer — click to start">
+      <span id="pomoMode">Focus</span><b id="pomoTime">25:00</b>
+      <button id="pomoReset" title="Reset" aria-label="Reset timer">↺</button>
+    </div>
+
+    <span class="pill" id="cdPill">📅 Set exam date</span>
+
+    <button id="tres">📚 Extra resources</button>
+  </div>
+
+  <h1>IGCSE Computer Science with Python</h1>
+  <p class="sub">Edexcel 4CP0 (9-1). Interactive guide, Python code runner and pseudocode comparison.</p>
+  <div id="count"></div>
+  <div class="prog"><i id="bar"></i></div>
+
+  <div id="weak"></div>
+
+  <details class="pan">
+    <summary>📝 Exam command words — how to answer</summary>
+    <div class="pan-body"><div class="cwlist" id="cwList"></div></div>
+  </details>
+
+  <details class="pan">
+    <summary>🧮 Quick-reference formula sheet</summary>
+    <div class="pan-body"><div class="frm" id="frmList"></div></div>
+  </details>
+
+  <details class="pan">
+    <summary>📖 Glossary — key terms A–Z</summary>
+    <div class="pan-body">
+      <input id="gsearch" placeholder="Type to filter…" autocomplete="off">
+      <div class="glz" id="glz"></div>
+    </div>
+  </details>
+
+  <div class="panel" id="plan">
+    <h2>Study planner</h2>
+    <div class="row">
+      <label>Exam date <input type="date" id="exam"></label>
+      <label>Study days per week <input type="number" id="dpw" min="1" max="7" value="4" style="width:60px"></label>
+    </div>
+    <div id="planout" class="sub"></div>
+    <div class="row"><input id="goal" placeholder="Add a goal, e.g. Finish loops by Friday" style="flex:1;min-width:200px"><button id="addgoal" class="p">Add goal</button></div>
+    <ul id="goals"></ul>
+  </div>
+
+  <div class="panel" id="res">
+    <h2>Useful websites</h2>
+    <div class="grid" id="reslinks"></div>
+    <div class="row" style="margin-top:12px">
+      <input id="ln" placeholder="Site name" style="width:160px"><input id="lu" placeholder="https://..." style="flex:1;min-width:180px"><button id="addlink" class="p">Add link</button>
+    </div>
+    <div class="sub" style="font-size:13px">Your own links are saved in this browser.</div>
+  </div>
+
+  <div id="topics"></div>
+  <p class="sub">Check every topic against the official Edexcel specification. Progress, notes, goals and links are saved in this browser.</p>
+</main>
+
+<!-- Resources modal -->
+<div class="modal" id="resmodal" role="dialog" aria-modal="true" aria-labelledby="restitle">
+  <div class="box">
+    <button class="x" data-close aria-label="Close">&times;</button>
+    <h2 id="restitle">🎉 You've completed every topic!</h2>
+    <p class="lead">That's the whole Edexcel 4CP0 spec covered. Don't stop here — the sites below have <b>thousands</b> of extra questions, past papers and mark schemes.</p>
+    <div class="rgrid" id="resgrid"></div>
+    <div class="foot">
+      <a class="btn p" href="https://www.savemyexams.com/igcse/computer-science/edexcel/" target="_blank" rel="noopener">Start more topic questions →</a>
+      <a class="btn" href="https://pastpapers.papacambridge.com/" target="_blank" rel="noopener">Past papers archive</a>
+      <button class="btn" data-close>Back to revision</button>
+    </div>
+  </div>
+</div>
+
+<!-- Flashcards modal -->
+<div class="modal2" id="fcmodal" role="dialog" aria-modal="true">
+  <div class="box2">
+    <button class="x2" data-close2 aria-label="Close">&times;</button>
+    <h3 id="fchead">Flashcards</h3>
+    <p class="lead" id="fcsub" style="margin-bottom:12px">Tap the card to flip it, then rate how well you knew it.</p>
+    <div id="fcbody"></div>
+    <div class="foot" id="fcfoot"></div>
+  </div>
+</div>
+
+<!-- Quiz modal -->
+<div class="modal2" id="qzmodal" role="dialog" aria-modal="true">
+  <div class="box2">
+    <button class="x2" data-close2 aria-label="Close">&times;</button>
+    <h3 id="qzhead">Quiz</h3>
+    <p class="lead" id="qzsub" style="margin-bottom:12px">Pick one answer per question, then check.</p>
+    <div id="qzbody"></div>
+    <div class="foot" id="qzfoot"></div>
+  </div>
+</div>
+
+<div id="kbd" role="dialog" aria-label="Keyboard shortcuts">
+  <div><b>?</b> <span>Show / hide this panel</span></div>
+  <div><b>d</b> <span>Mark current topic done</span></div>
+  <div><b>j</b> / <b>k</b> <span>Next / previous topic</span></div>
+  <div><b>f</b> <span>Open flashcards for current topic</span></div>
+  <div><b>q</b> <span>Open quiz for current topic</span></div>
+  <div><b>Esc</b> <span>Close any open panel</span></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script>
+/* ================= DATA ================= */
+const SITES=[
+ ["BBC Bitesize","GCSE Computer Science","https://www.bbc.co.uk/bitesize/subjects/z34k7ty"],
+ ["Save My Exams","Edexcel IGCSE notes","https://www.savemyexams.com/igcse/computer-science/edexcel/"],
+ ["Revision World","Computer science revision","https://revisionworld.com/"],
+ ["W3Schools Python","Python tutorial","https://www.w3schools.com/python/"],
+ ["Isaac Computer Science","Free theory and practice","https://isaaccomputerscience.org/"],
+ ["Pearson Edexcel 4CP0","Official specification","https://qualifications.pearson.com/en/qualifications/edexcel-international-gcses/computer-science-2017.html"],
+ ["Python docs","Official reference","https://docs.python.org/3/"],
+ ["Seneca Learning","Interactive courses","https://senecalearning.com/"]
+];
+const RES=[
+ ["Save My Exams","Topic questions with model answers for every Edexcel IGCSE unit.","https://www.savemyexams.com/igcse/computer-science/edexcel/","Topic Qs"],
+ ["Physics & Maths Tutor","Past papers sorted by topic and by year, with mark schemes.","https://www.physicsandmathstutor.com/","Past Papers"],
+ ["PapaCambridge","Massive archive of past papers, mark schemes and grade thresholds.","https://pastpapers.papacambridge.com/","Archive"],
+ ["GCE Guide","Past papers, examiner reports and notes for IGCSE Computer Science.","https://gceguide.com/","Past Papers"],
+ ["Dynamic Papers","Fast, clean downloads of recent papers by exam session.","https://dynamicpapers.com/","Past Papers"],
+ ["ZNotes","Condensed free revision notes written by top students.","https://znotes.org/","Notes"],
+ ["Pearson Edexcel (official)","Specification, specimen papers and the official past-paper portal.","https://qualifications.pearson.com/en/qualifications/edexcel-international-gcses/computer-science-2017.html","Official"],
+ ["Isaac Computer Science","Free interactive questions with instant feedback and explanations.","https://isaaccomputerscience.org/","Interactive"],
+ ["BBC Bitesize","Clear explanations plus quizzes on every Computer Science topic.","https://www.bbc.co.uk/bitesize/subjects/z34k7ty","Quizzes"],
+ ["Seneca Learning","Free interactive courses with auto-marked questions.","https://senecalearning.com/","Quizzes"],
+ ["Craig 'n' Dave","Free video walkthroughs of every CS concept, plus worksheets.","https://www.craigndave.org/","Videos"],
+ ["W3Schools — Python","Practise Python in the browser with built-in exercises and quizzes.","https://www.w3schools.com/python/","Coding"],
+ ["Python official docs","The reference for every function and module you'll use.","https://docs.python.org/3/","Reference"],
+ ["HackerRank — Python","Hundreds of graded Python challenges from easy to hard.","https://www.hackerrank.com/domains/python","Practice"],
+ ["Codewars","Short coding katas that build problem-solving speed.","https://www.codewars.com/","Practice"],
+ ["Khan Academy — Computing","Algorithms, data structures, binary and logic — fully free.","https://www.khanacademy.org/computing","Course"],
+ ["Teach-ICT","Theory notes and worksheets mapped to UK specifications.","https://www.teach-ict.com/","Notes"],
+ ["CS50 (Harvard, free)","Full intro computer science course if you want to go beyond IGCSE.","https://cs50.harvard.edu/x/","Course"]
+];
+const CW=[
+ ["State / Give","One short fact. No reason needed. Usually 1 mark."],
+ ["Identify","Name or pick out from a list or diagram. Usually 1 mark."],
+ ["Describe","Say what happens, feature by feature. No reasons. 2–4 marks."],
+ ["Explain","Give a reason or cause — use 'because' or 'so that'. Each valid reason = 1 mark."],
+ ["Compare","Both items, using comparative words (faster, cheaper, more reliable). Mention both."],
+ ["Discuss","Give points for and against, then a short balanced conclusion."],
+ ["Evaluate","Weigh up both sides and reach a clear judgement with a reason."],
+ ["Calculate","Show your working. Method marks are usually available even if the final answer is wrong."],
+ ["Suggest","Apply what you know to a new scenario. Often more than one valid answer."],
+ ["Complete","Fill in the blank in a table, trace table, truth table or code snippet."]
+];
+const FORMULAS=[
+ ["Image file size (bits)","width × height × colour depth"],
+ ["Sound file size (bits)","sample rate × bit depth × duration (s)"],
+ ["Bits → bytes","÷ 8"],
+ ["Bytes → KiB / MiB","÷ 1024  (or ÷ 1000 for decimal units)"],
+ ["Binary place values (8-bit)","128 64 32 16 8 4 2 1"],
+ ["Hex digits","0-9, A=10, B=11, C=12, D=13, E=14, F=15"],
+ ["Left shift by n","multiply by 2ⁿ"],
+ ["Right shift by n","integer divide by 2ⁿ"],
+ ["Colours from colour depth","2^(colour depth)"],
+ ["Truth table rows","2^(number of inputs)"],
+ ["Unsigned n-bit range","0 to (2ⁿ − 1)"],
+ ["Character → ASCII code","ord(\"A\") → 65  ·  chr(65) → \"A\""],
+ ["Time for a download","file size (bits) ÷ transfer rate (bits/s)"]
+];
+const GLOSSARY=[
+ ["Abstraction","Removing unnecessary detail so you focus only on what matters."],
+ ["Algorithm","A step-by-step set of instructions that solves a problem."],
+ ["ALU","Arithmetic Logic Unit — the part of the CPU that does calculations and logic."],
+ ["ASCII","7-bit character set for 128 English characters."],
+ ["Assembler","Translates assembly language into machine code."],
+ ["Binary","Base-2 number system using only 0 and 1."],
+ ["Bit","A single binary digit (0 or 1). Eight bits = one byte."],
+ ["Cache","Small, very fast memory inside or near the CPU that stores frequently used data."],
+ ["Compiler","Translates a whole program into machine code before it runs."],
+ ["Constant","A named value that does not change while a program runs."],
+ ["Data type","The kind of value a variable holds (int, float, str, bool)."],
+ ["Decomposition","Breaking a big problem into smaller, manageable parts."],
+ ["DNS","Domain Name System — turns a web address into an IP address."],
+ ["Embedded system","A computer built into a device to do one job (e.g. washing machine)."],
+ ["Firewall","Filters network traffic to block unauthorised access."],
+ ["Function","A subprogram that returns a value."],
+ ["Hexadecimal","Base-16 number system using 0-9 and A-F. One hex digit = four bits."],
+ ["IDE","Integrated Development Environment — editor, translator and debugger in one."],
+ ["Interpreter","Translates and runs a program one line at a time."],
+ ["Iteration","Repeating instructions — for loops (count) or while loops (condition)."],
+ ["LAN","Local Area Network covering a small area such as a school."],
+ ["Logic gate","A hardware circuit that performs a Boolean operation (AND, OR, NOT, etc.)."],
+ ["Lossless compression","Reduces file size without losing any data (PNG, ZIP)."],
+ ["Lossy compression","Permanently removes data to shrink the file (JPEG, MP3)."],
+ ["MAC address","A unique hardware address fixed to a network interface card."],
+ ["Malware","Software designed to harm or gain unauthorised access to a system."],
+ ["Operating system","System software that manages hardware, files and programs."],
+ ["Parameter","A placeholder in a subprogram definition for a value that will be passed in."],
+ ["Phishing","Fake emails or websites that trick people into giving away details."],
+ ["Pixel","A single dot in an image; more pixels = higher resolution."],
+ ["Procedure","A subprogram that performs an action but does not return a value."],
+ ["Protocol","A set of rules for how devices communicate (HTTP, FTP, SMTP, TCP/IP)."],
+ ["Pseudocode","A simplified language for writing algorithms that is not tied to one programming language."],
+ ["RAM","Volatile working memory that holds programs and data while the computer is on."],
+ ["ROM","Non-volatile memory that holds start-up instructions and cannot be changed."],
+ ["Selection","Choosing between paths in a program using if / elif / else."],
+ ["Sequence","Instructions carried out in order, one after another."],
+ ["Star topology","Every device connects to a central switch."],
+ ["Trace table","A table used to follow a program's variables line by line to find logic errors."],
+ ["Validation","Checking that data is sensible (range, type, length, presence)."],
+ ["Variable","A named location in memory whose value can change."],
+ ["Verification","Checking data was entered correctly (e.g. typing a password twice)."],
+ ["WAN","Wide Area Network covering a large area — the internet is the biggest WAN."]
+];
+
+/* ================= FLASHCARDS ================= */
+const FLASH={
+0:[["What are the three building blocks of any program?","Sequence, selection and iteration."],
+   ["Why does Python rely on indentation?","It groups statements into blocks — inside loops, selections and subprograms."],
+   ["What is a subprogram?","A reusable block of code. Functions return a value; procedures do not."]],
+1:[["Difference between a variable and a constant?","A variable can change while the program runs; a constant stays fixed."],
+   ["What is the difference between a parameter and an argument?","Parameter = name in the definition. Argument = actual value passed when calling."],
+   ["Name the four main validation checks.","Range, type, length, presence."]],
+2:[["What data type does input() always return?","A string (str) — you must cast it."],
+   ["How do you cast the string \"42\" to an integer?","int(\"42\")"],
+   ["Name the four basic Python data types.","int, float, str, bool."]],
+3:[["What is the difference between / and // in Python?","/ gives a float; // gives whole-number division (DIV)."],
+   ["What does the % operator return?","The remainder (MOD)."],
+   ["What does s[1:4] return for s = \"Computer\"?","\"omp\" — index 1 up to (but not including) 4."]],
+4:[["Which two operators test equality and inequality?","== (equal) and != (not equal)."],
+   ["Why is 'if age >= 13 and <= 19' wrong?","Each side of 'and' must be a full condition: 'age >= 13 and age <= 19'."],
+   ["How do you test if n is even?","n % 2 == 0"]],
+5:[["Difference between for and while?","for is count-controlled; while is condition-controlled."],
+   ["What numbers does range(1, 6) produce?","1, 2, 3, 4, 5 (stops before 6)."],
+   ["What causes an infinite while loop?","The loop condition never becomes false — often the counter is not updated."]],
+6:[["What is the index of the first item in a list?","0."],
+   ["How do you access row 1, column 2 of a 2D list grid?","grid[1][2]"],
+   ["How do you find the number of items in list a?","len(a)"]],
+7:[["How does a function differ from a procedure?","A function returns a value; a procedure does not."],
+   ["Where are local variables visible?","Only inside the subprogram where they are defined."],
+   ["What keyword sends a value back from a function?","return"]],
+8:[["Difference between validation and verification?","Validation: data is sensible. Verification: data was entered correctly."],
+   ["Name the three test data types.","Normal, boundary, erroneous."],
+   ["Name the three error types.","Syntax, logic, runtime."]],
+9:[["What does mode 'w' do to an existing file?","Overwrites it — you lose the old contents."],
+   ["Which mode adds to the end of a file?","'a' (append)."],
+   ["Why use 'with open(...)'?","It closes the file automatically when the block ends."]],
+10:[["When can you use binary search?","Only on a sorted list."],
+    ["How does bubble sort work?","Compares neighbours and swaps them; each pass puts the next largest item at the end."],
+    ["What does linear search return if the item is not found?","Typically -1."]],
+11:[["Place values of an 8-bit binary number?","128 64 32 16 8 4 2 1."],
+    ["How many bits does one hexadecimal digit represent?","4 bits (one nibble)."],
+    ["What does a left shift by 1 do to a value?","Multiplies it by 2."]],
+12:[["Define abstraction.","Removing unnecessary detail to focus on what matters."],
+    ["What is decomposition?","Breaking a big problem into smaller, manageable parts."],
+    ["What is a trace table used for?","Following variables line by line to find logic errors."]],
+13:[["Convert binary 1011 0101 to hex.","B5."],
+    ["What is 45 in binary?","0010 1101."],
+    ["Why is Unicode better than ASCII?","It supports many more characters, so it can store other languages and emojis."]],
+14:[["Formula for image file size in bits?","width × height × colour depth."],
+    ["Formula for sound file size in bits?","sample rate × bit depth × duration (seconds)."],
+    ["Difference between lossy and lossless compression?","Lossy permanently removes data; lossless keeps everything and can be reversed."]],
+15:[["Name the three main parts of the CPU.","ALU, control unit and registers."],
+    ["What does the fetch-decode-execute cycle do?","Fetches an instruction from memory, decodes it, executes it, repeats."],
+    ["Name three factors that affect CPU performance.","Clock speed, number of cores, cache size."]],
+16:[["Difference between system and application software?","System software runs the computer; application software does tasks for the user."],
+    ["What does a compiler do?","Translates the whole program to machine code before it runs."],
+    ["Name three jobs of an operating system.","Memory management, file management, device management (also: security, UI)."]],
+17:[["What does an AND gate output?","1 only when both inputs are 1."],
+    ["What does an OR gate output?","1 when at least one input is 1."],
+    ["How many rows does a truth table with 3 inputs have?","2³ = 8 rows."]],
+18:[["Difference between LAN and WAN?","LAN covers a small area; WAN covers a large area."],
+    ["What does DNS do?","Turns a domain name into an IP address."],
+    ["Why does data travel in packets?","So it can take different routes and be reassembled at the destination — more efficient and resilient."]],
+19:[["Name four types of malware.","Virus, worm, trojan, spyware, ransomware (any four)."],
+    ["What does a firewall do?","Filters incoming and outgoing network traffic to block unauthorised access."],
+    ["What is phishing?","Fake emails or websites that trick people into giving away personal details."]],
+20:[["Name three emerging technologies.","AI, IoT, robotics, VR/AR, cloud computing, wearables (any three)."],
+    ["Give one benefit and one drawback of cloud computing.","Benefit: access files anywhere. Drawback: needs internet and depends on the provider's security."],
+    ["What is the digital divide?","The gap between people who have access to technology and those who do not."]]
+};
+
+/* ================= QUIZ ================= */
+const QUIZ={
+0:[{q:"Which construct repeats a block of code?",o:["Sequence","Selection","Iteration"],c:2,w:"Iteration covers for and while loops."},
+   {q:"What does a function do that a procedure does not?",o:["Take parameters","Return a value","Use variables"],c:1,w:"Functions RETURN a value; procedures just perform an action."},
+   {q:"Why does Python rely on indentation?",o:["To run faster","To group statements into blocks","To save memory"],c:1,w:"Indentation defines block structure in Python."}],
+1:[{q:"Which is a constant by convention in Python?",o:["score = 0","MAX_ATTEMPTS = 3","count += 1"],c:1,w:"UPPERCASE names signal a constant."},
+   {q:"What is a value passed into a subprogram called?",o:["Parameter","Argument","Return"],c:1,w:"Argument is the actual value; parameter is the placeholder in the definition."},
+   {q:"Which is NOT a validation check?",o:["Range check","Type check","Syntax check"],c:2,w:"Syntax errors are caught by the translator, not by validation."}],
+2:[{q:"What data type does input() always return?",o:["int","str","float"],c:1,w:"input() always returns a string; cast it with int() or float()."},
+   {q:"Which converts the string \"7\" into an integer?",o:["str(\"7\")","int(\"7\")","float(7)"],c:1,w:"int(\"7\") returns the number 7."},
+   {q:"Which data type holds True or False?",o:["str","int","bool"],c:2,w:"bool holds True or False."}],
+3:[{q:"What does 135 // 60 give?",o:["2.25","2","15"],c:1,w:"// is whole-number division (DIV), so 135 // 60 = 2."},
+   {q:"What does \"Computer\"[0] return?",o:["\"C\"","\"o\"","\"Computer\""],c:0,w:"Indexing starts at 0, so [0] is the first character."},
+   {q:"What does 7 % 3 return?",o:["2","1","3"],c:1,w:"% is the remainder, so 7 % 3 = 1."}],
+4:[{q:"Which operator tests equality?",o:["=","==","!="],c:1,w:"== compares; = assigns."},
+   {q:"Which is a valid multi-condition test?",o:["if 13 <= age <= 19:","if age >= 13 and <= 19:","if age >= 13 and age <= 19:"],c:2,w:"Each side of 'and' needs a full condition."},
+   {q:"What does not True return?",o:["True","False","None"],c:1,w:"not flips the value."}],
+5:[{q:"range(1, 6) produces which numbers?",o:["1 to 6","1 to 5","0 to 5"],c:1,w:"range stops before the second argument."},
+   {q:"Which loop is condition-controlled?",o:["for","while","both"],c:1,w:"while loops until a condition becomes false."},
+   {q:"What causes an infinite loop?",o:["Missing colon","The loop variable is never updated","Using range()"],c:1,w:"If the condition never becomes false the loop runs forever."}],
+6:[{q:"What is the index of the first item in a list?",o:["1","0","-1"],c:1,w:"Python lists are zero-indexed."},
+   {q:"How do you add an item to the end of a list?",o:["a.add(x)","a.append(x)","a.push(x)"],c:1,w:"append() adds to the end of a list."},
+   {q:"For grid = [[1,2],[3,4]], what is grid[1][0]?",o:["1","3","4"],c:1,w:"Row 1, column 0 gives the value 3."}],
+7:[{q:"Which keyword returns a value from a function?",o:["print","return","output"],c:1,w:"return sends a value back to the caller."},
+   {q:"Where can a local variable be used?",o:["Anywhere in the program","Only inside its subprogram","Only in the main program"],c:1,w:"Local variables are only visible inside their subprogram."},
+   {q:"What is a subprogram that returns nothing called?",o:["Function","Procedure","Method"],c:1,w:"Procedures perform an action but do not return a value."}],
+8:[{q:"What is the purpose of validation?",o:["To check data is sensible","To prove data is correct","To fix data errors"],c:0,w:"Validation checks data is sensible; it does not prove correctness."},
+   {q:"Which is a boundary value for age 1–120?",o:["60","0","120"],c:2,w:"Boundary values sit at the edges of the accepted range."},
+   {q:"Which error type stops the program before it runs?",o:["Logic","Runtime","Syntax"],c:2,w:"Syntax errors are caught during translation."}],
+9:[{q:"Which mode overwrites an existing file?",o:["\"r\"","\"w\"","\"a\""],c:1,w:"'w' truncates the file, destroying its old contents."},
+   {q:"What does line.strip() do?",o:["Removes spaces inside the string","Removes leading/trailing whitespace including \\n","Splits the line"],c:1,w:"strip() removes surrounding whitespace, including the newline character."},
+   {q:"Why use 'with open(...)'?",o:["It runs faster","It closes the file automatically","It is required syntax"],c:1,w:"The with block closes the file when it ends, even if an error occurs."}],
+10:[{q:"Which search needs a sorted list?",o:["Linear search","Binary search","Both"],c:1,w:"Binary search halves the list, so it must be sorted."},
+    {q:"How does bubble sort move the largest item?",o:["To the start","To the end, one step per pass","To the middle"],c:1,w:"Each pass pushes the next largest item to the end."},
+    {q:"What does linear search return if the target is missing?",o:["0","-1","None"],c:1,w:"By convention -1 signals 'not found'."}],
+11:[{q:"What is binary 1101 in denary?",o:["11","13","14"],c:1,w:"8 + 4 + 1 = 13."},
+    {q:"How many bits does one hex digit represent?",o:["2","4","8"],c:1,w:"One hex digit = 4 bits (one nibble)."},
+    {q:"What does a left shift by 1 do?",o:["Divide by 2","Multiply by 2","Add 1"],c:1,w:"Each left shift multiplies by 2."}],
+12:[{q:"What is abstraction?",o:["Breaking problems into parts","Removing unneeded detail","Spotting patterns"],c:1,w:"Abstraction removes detail you do not need."},
+    {q:"What is decomposition?",o:["Breaking a problem into smaller parts","Removing detail","Sorting data"],c:0,w:"Decomposition breaks the problem into manageable pieces."},
+    {q:"What is a trace table used for?",o:["Storing data","Finding logic errors","Sorting numbers"],c:1,w:"Trace tables follow variables line by line."}],
+13:[{q:"Convert 1011 0101 to hex.",o:["B5","A5","C5"],c:0,w:"1011 = B, 0101 = 5, so B5."},
+    {q:"What is 45 in 8-bit binary?",o:["0010 1101","0011 1101","0010 1011"],c:0,w:"32 + 8 + 4 + 1 = 45."},
+    {q:"Why is Unicode preferred over ASCII for global text?",o:["It is smaller","It supports many more characters","It is faster"],c:1,w:"Unicode covers many languages and emojis."}],
+14:[{q:"Formula for image file size in bits?",o:["w + h × depth","w × h × depth","w × h + depth"],c:1,w:"width × height × colour depth."},
+    {q:"Which is lossy?",o:["PNG","JPEG","ZIP"],c:1,w:"JPEG throws data away permanently to reduce file size."},
+    {q:"What does colour depth measure?",o:["Pixels per inch","Bits per pixel","File size"],c:1,w:"Colour depth is bits per pixel."}],
+15:[{q:"Name the three main parts of the CPU.",o:["ALU, control unit, registers","RAM, ROM, cache","CPU, GPU, PSU"],c:0,w:"The CPU contains the ALU, control unit and registers."},
+    {q:"What does the control unit do?",o:["Does calculations","Directs operations","Stores data"],c:1,w:"The control unit directs the flow of instructions and data."},
+    {q:"Which is NOT a factor in CPU performance?",o:["Clock speed","Number of cores","Screen size"],c:2,w:"Screen size does not affect CPU speed."}],
+16:[{q:"What does a compiler do?",o:["Runs code line by line","Translates the whole program before it runs","Edits code"],c:1,w:"A compiler translates the whole program to machine code."},
+    {q:"Which is system software?",o:["Word processor","Operating system","Web browser"],c:1,w:"The OS is system software; the others are application software."},
+    {q:"What is an IDE?",o:["A programming language","A tool for writing, translating and debugging code","A type of compiler"],c:1,w:"IDE = Integrated Development Environment."}],
+17:[{q:"AND outputs 1 when…",o:["Either input is 1","Both inputs are 1","Inputs are different"],c:1,w:"AND requires both inputs to be 1."},
+    {q:"OR outputs 1 when…",o:["Both inputs are 1","At least one input is 1","Inputs are different"],c:1,w:"OR outputs 1 if either input is 1."},
+    {q:"How many rows in a 3-input truth table?",o:["3","6","8"],c:2,w:"2³ = 8 rows."}],
+18:[{q:"What does DNS do?",o:["Encrypts traffic","Turns a domain name into an IP address","Fires the router"],c:1,w:"DNS resolves names to IP addresses."},
+    {q:"Which protocol sends web pages?",o:["SMTP","HTTP/HTTPS","FTP"],c:1,w:"HTTP/HTTPS is used for the web."},
+    {q:"Why is data sent in packets?",o:["So it can take different routes and be reassembled","To make it bigger","To encrypt it"],c:0,w:"Packets can take different routes and are reassembled at the destination."}],
+19:[{q:"Which is a form of social engineering?",o:["Phishing","Firewall","Defragmentation"],c:0,w:"Phishing tricks people into revealing information."},
+    {q:"What does a firewall do?",o:["Encrypts files","Filters network traffic","Backs up data"],c:1,w:"Firewalls block unauthorised traffic."},
+    {q:"What is ransomware?",o:["Software that locks files until a payment","A firewall","A browser add-on"],c:0,w:"Ransomware encrypts files and demands payment."}],
+20:[{q:"Which is an emerging technology?",o:["Fax machine","Internet of Things","Dial-up modem"],c:1,w:"IoT connects everyday devices to the internet."},
+    {q:"Which is a legal concern of AI?",o:["Bias in training data","Screen resolution","Battery life"],c:0,w:"AI can inherit and amplify bias from its training data."},
+    {q:"What is the digital divide?",o:["A type of cable","The gap between those with and without technology access","A firewall rule"],c:1,w:"The digital divide describes unequal access to technology."}]
+};
+
+/* ================= TOPICS ================= */
+const T=[
+{t:"How a whole program is put together",p:["<b>Three building blocks:</b> sequence (line by line), selection (if/elif/else) and iteration (for/while).","<b>Indentation:</b> Python uses 4 spaces to group statements inside loops, selections and subprograms.","<b>Comments and naming:</b> use # for comments and descriptive snake_case names such as total_score.","<b>Functions:</b> split programs into reusable subprograms that take parameters and return values."],ps:`function calculateAverage(scores)
+  SET sum TO 0
+  FOR EACH score FROM scores
+    SET sum TO sum + score
+  ENDFOR
+  RETURN sum / LENGTH(scores)
+endfunction
+SET avg TO calculateAverage([12, 18, 15, 20])
+IF avg >= 15 THEN
+  SEND "Class performed well" TO DISPLAY
+ELSE
+  SEND "Class needs review" TO DISPLAY
+ENDIF`,c:`def calculate_average(scores):
+    total = 0
+    for score in scores:
+        total += score
+    return total / len(scores)
+
+avg = calculate_average([12, 18, 15, 20])
+if avg >= 15:
+    print("Class performed well")
+else:
+    print("Class needs review")`,m:"Forgetting to indent blocks, or mixing indentation sizes."},
+{t:"Core programming structures",p:["<b>Variables</b> can change (score = score + 1). <b>Constants</b> stay fixed (PI = 3.14159).","<b>Data types:</b> int, float, str, bool. <b>Casting:</b> int(\"42\").","<b>Iteration:</b> for is count-controlled, while is condition-controlled.","<b>Procedures</b> do an action; <b>functions</b> also RETURN a value. A parameter is in the definition; an argument is the value passed.","<b>Scope:</b> local variables exist only inside a subprogram; global variables are visible everywhere.","<b>Validation:</b> range, type, length and presence checks."],ps:`constant MAX_ATTEMPTS = 3
+function validateAge(age)
+  if age >= 1 and age <= 120 then
+    return true
+  else
+    return false
+  endif
+endfunction
+procedure processUser()
+  SET ageInput TO 18
+  IF validateAge(ageInput) == true THEN
+    SEND "Valid entry" TO DISPLAY
+  ENDIF
+endprocedure`,c:`MAX_ATTEMPTS = 3
+
+def validate_age(age):
+    return 1 <= age <= 120
+
+def process_user():
+    age_input = 18
+    if validate_age(age_input):
+        print("Valid entry")
+
+process_user()`,m:"Confusing parameters (definition) with arguments (call), or using a function when nothing is returned."},
+{t:"Variables, data types and input",p:["Data types: integer int, real float, string str, Boolean bool.","input() always returns a string, so cast it with int(), float() or str().","A variable is a named memory location. Use clear names such as total_score."],c:`name = input("Name: ")
+age = int(input("Age: "))
+height = float(input("Height in m: "))
+print(name, "is", age, "and", height, "m tall")
+print(type(age))`,m:"Forgetting to cast: \"5\" + 1 gives a TypeError."},
+{t:"Operators and strings",p:["// is DIV (whole number), % is MOD (remainder), ** is power, / always gives a float.","Strings are indexed from 0. A slice s[a:b] includes a and stops before b.","Strings cannot be changed in place; build a new string instead."],c:`mins = 135
+print(mins // 60, "h", mins % 60, "min")
+word = "Computer"
+print(len(word), word[0], word[0:3], word[-1])
+print(word.upper(), word.find("put"), word.replace("C", "c"))`,m:"Using = (assign) when you meant == (compare)."},
+{t:"Selection and Boolean logic",p:["Comparison: == != &lt; &gt; &lt;= &gt;=. Logic: and, or, not.","Use elif for extra choices and else for everything left over.","Even test: n % 2 == 0."],c:`mark = int(input("Mark: "))
+if mark >= 70:
+    print("Distinction")
+elif mark >= 40 and mark < 70:
+    print("Pass")
+else:
+    print("Fail")`,m:"Writing age >= 13 and <= 19. Each side of and needs a full condition."},
+{t:"Iteration (loops)",p:["for is count-controlled; while is condition-controlled.","range(1, 6) gives 1 to 5, stopping before 6.","Practise trace tables: write each variable's value after every line."],c:`for i in range(1, 6):
+    print(i, i * i)
+
+total = 0
+count = 0
+while count < 3:
+    total = total + int(input("Number: "))
+    count = count + 1
+print("Total:", total)`,m:"An infinite loop because the loop variable is never updated."},
+{t:"Lists and 2D lists (arrays)",p:["A list holds many values; the first index is 0 and the last is len(list) - 1.","A 2D list is a list of lists: grid[row][column].","Useful: append, remove, len, sum, min, max, x in list."],c:`scores = [12, 18, 9, 15]
+scores.append(20)
+print(sum(scores), max(scores), sum(scores) / len(scores))
+
+grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+for row in grid:
+    for v in row:
+        print(v, end=" ")
+    print()`,m:"IndexError from scores[len(scores)], or swapping row and column."},
+{t:"Subprograms (functions and procedures)",p:["A function returns a value; a procedure does something but returns nothing.","Parameters go in the brackets when you define it; arguments are the values you pass when you call it.","Variables made inside a subprogram are local to it."],c:`def area(length, width):
+    return length * width
+
+def greet(name):
+    print("Hello", name)
+
+print(area(4, 5))
+greet("Sam")`,m:"Using print inside a function when you needed return, or forgetting to call it."},
+{t:"Validation, testing and errors",p:["Validation checks data is sensible (range, type, length, presence). It does not prove it is correct.","Verification checks data was entered correctly, for example by typing it twice.","Test data types: normal, boundary and erroneous.","Error types: syntax, logic and runtime."],c:`def get_age():
+    while True:
+        text = input("Age (1-120): ")
+        if text.isdigit() and 1 <= int(text) <= 120:
+            return int(text)
+        print("Invalid, try again")
+
+print("Age is", get_age())`,m:"Mixing up validation and verification."},
+{t:"Text files",p:["Modes: \"r\" read, \"w\" write (overwrites), \"a\" append.","with open(...) closes the file for you.",".strip() removes the newline; .split(\",\") splits a line into fields."],c:`with open("scores.txt", "w") as f:
+    f.write("Ana,12\\n")
+    f.write("Ben,15\\n")
+
+with open("scores.txt", "r") as f:
+    for line in f:
+        name, mark = line.strip().split(",")
+        print(name, mark)`,m:"Opening with \"w\" when you wanted to add lines. It wipes the file."},
+{t:"Searching and sorting",p:["Linear search checks each item in turn and works on any list.","Binary search halves a sorted list each time, so it needs sorted data.","Bubble sort compares neighbours and swaps them; each pass places the next largest item at the end."],c:`def linear_search(items, target):
+    for i in range(len(items)):
+        if items[i] == target:
+            return i
+    return -1
+
+def bubble_sort(a):
+    for p in range(len(a) - 1):
+        for i in range(len(a) - 1 - p):
+            if a[i] > a[i + 1]:
+                a[i], a[i + 1] = a[i + 1], a[i]
+    return a
+
+print(linear_search([4, 8, 2], 8))
+print(bubble_sort([5, 1, 4, 2]))`,m:"Returning -1 inside the loop instead of after it."},
+{t:"Binary, hex, logic and encryption",p:["Binary place values: 128 64 32 16 8 4 2 1. Eight bits make one byte. Hex uses 0-9 and A-F.","Character codes: ord(\"A\") is 65 and chr(65) is \"A\".","A Caesar cipher shifts each letter by a fixed amount."],c:`print(bin(13), int("1101", 2), hex(255), int("FF", 16))
+print(format(13, "08b"))
+a, b = True, False
+print(a and b, a or b, not a)
+
+def caesar(text, shift):
+    out = ""
+    for ch in text:
+        if ch.isalpha():
+            out += chr((ord(ch.upper()) - 65 + shift) % 26 + 65)
+        else:
+            out += ch
+    return out
+
+print(caesar("HELLO", 3))`,m:"bin() returns text starting with 0b, not a plain number."},
+{t:"Theory: Computational thinking and algorithms",th:1,p:["<b>Decomposition:</b> break a big problem into smaller parts. <b>Abstraction:</b> remove detail you do not need. <b>Pattern recognition:</b> spot what repeats.","An algorithm is a step-by-step set of instructions, shown as a flowchart or pseudocode.","Flowchart symbols: oval = start/stop, rectangle = process, diamond = decision, parallelogram = input/output.","Use a trace table to follow variables line by line and find logic errors."],tip:"Say what a term means, then apply it to the scenario in the question."},
+{t:"Theory: Number systems and text",th:1,p:["Denary is base 10, binary is base 2, hexadecimal is base 16 (0-9 then A-F). One hex digit represents 4 bits.","Binary addition: 1+1 = 10, so write 0 and carry 1. An answer too big for the bits available is an overflow error.","A left shift multiplies by 2 and a right shift divides by 2 (per place).","Text uses character sets: ASCII (7 or 8 bits) and Unicode (many more characters, so more languages and emojis)."],tip:"Show your working for conversions, since method marks are easy to earn."},
+{t:"Theory: Images, sound and compression",th:1,p:["An image is a grid of pixels. Colour depth is bits per pixel; resolution is the number of pixels.","Image file size in bits = width × height × colour depth.","Sound is sampled: sample rate is samples per second and bit depth is bits per sample.","Units: bit, byte, kilobyte, megabyte, gigabyte, terabyte.","Lossy compression removes data permanently (JPEG, MP3). Lossless keeps everything (PNG, ZIP)."],tip:"Convert bits to bytes (divide by 8) before giving a final file size in bytes."},
+{t:"Theory: Hardware and the CPU",th:1,p:["The CPU has an ALU (calculations and logic), a control unit (directs operations) and registers (tiny fast storage).","Fetch-decode-execute cycle: fetch an instruction from memory, decode it, execute it, repeat.","CPU performance depends on clock speed, number of cores and cache size.","RAM is volatile working memory. ROM is non-volatile and holds start-up instructions.","Secondary storage keeps data when the power is off: magnetic, optical, solid state.","Embedded systems are computers built into a device to do one job."],tip:"When comparing storage, use capacity, speed, portability, durability and cost."},
+{t:"Theory: Software and programming languages",th:1,p:["System software runs the computer (operating system, utilities). Application software does tasks for the user.","The operating system manages memory, files, devices (through drivers), multitasking, security and the user interface.","Utilities include anti-malware, backup, compression and defragmentation.","Low-level languages (machine code, assembly) are close to the hardware. High-level languages (such as Python) are easier for humans to read.","A compiler translates the whole program before it runs. An interpreter translates and runs it line by line."],tip:"A compiler produces a separate executable file; an interpreter does not."},
+{t:"Theory: Logic gates and truth tables",th:1,p:["AND gives 1 only if both inputs are 1. OR gives 1 if either input is 1. NOT flips the input.","Check your specification for other gates such as XOR, NAND and NOR.","Write an expression like Q = A AND (NOT B), then build the truth table one column at a time.","A truth table with n inputs has 2 to the power n rows."],tip:"Work out the middle columns (like NOT B) before the final output column."},
+{t:"Theory: Networks and the internet",th:1,p:["A LAN covers a small area; a WAN covers a large area (the internet is the biggest WAN).","Hardware: network interface card, switch, router, wireless access point. Topologies: star and mesh.","An IP address identifies a device on a network; a MAC address is fixed to the network card. DNS turns a domain name into an IP address.","Protocols: HTTP/HTTPS (web), FTP (files), SMTP (email), TCP/IP (sending data).","Data travels in packets, which can take different routes and are reassembled at the destination.","Client-server uses a central server; peer-to-peer shares between equal computers."],tip:"Compare topologies using cost, reliability, speed and what happens when one cable fails."},
+{t:"Theory: Cyber security",th:1,p:["Threats: malware (virus, worm, trojan, spyware, ransomware), phishing, brute-force attacks, denial of service and human error.","Protection: firewall, anti-malware, strong passwords and two-step login, access levels, backups, updates and encryption.","Encryption scrambles data so it is unreadable without the key.","Penetration testing is authorised hacking to find weaknesses before attackers do."],tip:"Name the threat, say what it does, then give a matching protection."},
+{t:"Theory: Emerging trends and impacts",th:1,p:["Trends: AI and machine learning, the Internet of Things, robotics, VR and AR, cloud computing and wearables.","Think about impacts: social (jobs, privacy), ethical (bias, surveillance) and environmental (energy use, e-waste).","Legal areas often examined: data protection, computer misuse and copyright.","Give one benefit and one drawback for each technology."],tip:"Give a balanced answer: benefit, drawback, then a short judgement."}
+];
+const MORE={
+12:["<b>Flowchart example:</b> input a password, then a decision diamond asks \"correct?\". Yes leads to \"Access granted\"; No loops back.","<b>Trace table example:</b> total = 0, then for i from 1 to 3 do total = total + i. Rows: (1,1), (2,3), (3,6).","A trace table finds <b>logic errors</b>: the program runs but gives the wrong output.","<b>Efficiency:</b> fewer steps = more efficient. Binary search beats linear search on a large sorted list."],
+13:["<b>Binary to denary:</b> 10110101 = 128 + 32 + 16 + 4 + 1 = 181.","<b>Denary to binary:</b> 45 = 32 + 8 + 4 + 1, so 00101101.","<b>Binary to hex:</b> split into groups of 4 bits: 1011 0101 = B5.","<b>Binary addition:</b> 00110101 + 00011011 = 01010000. Carry 1 whenever a column adds to 2 or more.","<b>Shifts:</b> 00001100 (12) << 1 = 00011000 (24); >> 1 = 00000110 (6).","ASCII has 128 characters in 7 bits. Lowercase = uppercase + 32 (A = 65, a = 97)."],
+14:["<b>Image size example:</b> 100 × 50 pixels at 8 bits per pixel = 40,000 bits = 5,000 bytes.","Number of colours = 2^(colour depth): 8 bits gives 256 colours.","<b>Sound size</b> = sample rate × bit depth × seconds.","Metadata is extra data stored with a file (image width, height, colour depth).","<b>RLE</b> (lossless): AAAABBB becomes 4A3B."],
+15:["<b>Von Neumann architecture:</b> instructions and data share the same memory.","<b>Cache</b> is small, very fast memory holding frequently used data.","<b>Virtual memory:</b> part of secondary storage used as extra RAM when RAM is full.","<b>SSD vs HDD:</b> SSD is faster, quieter, more durable, but costs more per GB.","Input devices (keyboard, microphone, sensors) send data in; output devices present it."],
+16:["<b>OS jobs:</b> memory, files, drivers, UI, multitasking, security.","An <b>assembler</b> translates assembly into machine code.","<b>Compiler:</b> translates the whole program; all errors reported at once. <b>Interpreter:</b> translates line by line, stops at first error.","<b>Defragmentation</b> stores file fragments together on HDD. Not needed for SSD.","<b>IDE features:</b> editor, translator, error diagnostics, run-time environment, debugger."],
+17:["<b>Truth tables:</b> AND = 0,0,0,1 · OR = 0,1,1,1 · NOT flips one input.","<b>Worked Q = A AND (NOT B):</b> 0,0→0 · 0,1→0 · 1,0→1 · 1,1→0.","XOR = 1 when inputs differ. NAND = NOT AND. NOR = NOT OR.","List rows in counting order (00,01,10,11) so you never skip one.","Python uses and, or, not in the same way."],
+18:["<b>Star:</b> all devices to a central switch. One cable fails → only that device affected. Switch fails → whole network down.","<b>Mesh:</b> many links. Very reliable, expensive to install.","<b>Wired vs wireless:</b> wired faster and more secure; wireless more convenient.","A router connects networks; a switch sends data only to the intended device.","Each packet has a header (addresses, packet number) and the data.","<b>Visiting a website:</b> DNS lookup → HTTP request → page returned. HTTPS encrypts."],
+19:["<b>Malware:</b> virus attaches to files; worm spreads across networks; trojan pretends to be useful; spyware records activity; ransomware locks files.","<b>Phishing</b> uses fake emails or sites — a form of social engineering.","<b>Brute force</b> tries many passwords. Defences: long passwords, login limits, 2-step login.","<b>DoS/DDoS</b> floods a server so real users cannot get through.","<b>SQL injection</b> puts commands into input boxes. Sanitise all input."],
+20:["<b>AI:</b> benefit — automation and pattern spotting. Drawback — bias, job losses.","<b>IoT:</b> convenience; poorly secured devices can be hacked.","<b>Cloud:</b> access anywhere; needs internet and trust in the provider.","<b>Robotics:</b> accurate repetitive work; can replace workers.","<b>VR/AR:</b> useful for training; costly, can cause discomfort.","<b>Environmental:</b> e-waste and data-centre energy use.","The <b>digital divide</b> is unequal access to technology.","<b>Legal:</b> data protection, computer misuse, copyright."]
+};
+Object.keys(MORE).forEach(i=>T[i].p.push(...MORE[i]));
+
+/* ================= EXTRA QUESTIONS + FLASHCARDS ================= */
+const XQ={
+0:[['Which is an example of selection?',['for i in range(5):','if x > 3:','x = x + 1'],1,'if/elif/else chooses between paths.'],['Which symbol starts a Python comment?',['//','#','--'],1,'# starts a comment.']],
+1:[['Which check makes sure a password is not left empty?',['Range','Presence','Type'],1,'A presence check confirms data was entered.'],['Where is a local variable declared?',['Outside all subprograms','Inside a subprogram','In a comment'],1,'Local variables exist only inside their subprogram.']],
+2:[['What is the data type of 3.5?',['int','float','str'],1,'Numbers with a decimal part are float.'],['What does int("3") + 4 give?',['7','34','Error'],0,'int("3") is 3, so 3 + 4 = 7.']],
+3:[['What does 2 ** 3 give?',['6','8','5'],1,'** is power: 2 x 2 x 2 = 8.'],['What does len("Python") return?',['5','6','7'],1,'Python has 6 characters.']],
+4:[['What does 5 != 5 evaluate to?',['True','False','Error'],1,'!= means not equal; 5 equals 5, so False.'],['Which operator needs both conditions to be true?',['or','and','not'],1,'and is true only if both sides are true.']],
+5:[['How many times does for i in range(4) run?',['3','4','5'],1,'range(4) gives 0, 1, 2, 3 - four times.'],['Which statement ends a loop early?',['skip','break','stop'],1,'break exits the loop immediately.']],
+6:[['What does len([4,5,6]) return?',['2','3','6'],1,'There are 3 items.'],['For a = [10,20,30], what is a[-1]?',['10','30','20'],1,'Index -1 is the last item.']],
+7:[['Which keyword defines a subprogram?',['def','make','sub'],0,'def starts a function or procedure definition.'],['What is printed by: def f(x): return x * 2, then print(f(4))?',['4','8','f(4)'],1,'f(4) returns 8.']],
+8:[['Which is erroneous test data for an age check of 1-120?',['50','"abc"','120'],1,'Text is the wrong type, so it is erroneous.'],['Which error gives wrong output but no crash?',['Syntax','Logic','Runtime'],1,'A logic error runs but produces the wrong result.']],
+9:[['Which mode opens a file for reading only?',['"r"','"w"','"a"'],0,'"r" is read mode.'],['What does f.write() do?',['Reads a line','Writes text to the file','Closes the file'],1,'write() puts text into the file.']],
+10:[['What is the first step of binary search?',['Check the first item','Check the middle item','Sort descending'],1,'Binary search starts at the middle of a sorted list.'],['After one bubble sort pass on [3,1,2], where is 3?',['At the start','At the end','In the middle'],1,'The largest item moves to the end: [1,2,3].']],
+11:[['What is binary 1111 in denary?',['15','16','14'],0,'8 + 4 + 2 + 1 = 15.'],['What is denary 255 in hex?',['EF','FF','F0'],1,'255 = 1111 1111 = FF.']],
+12:[['Which flowchart symbol shows a decision?',['Oval','Diamond','Rectangle'],1,'A diamond asks a yes/no question.'],['Which is a benefit of decomposition?',['Parts can be solved separately','It removes all errors','It makes programs longer'],0,'Smaller parts are easier to solve and test.']],
+13:[['What is 0000 1010 in denary?',['8','10','12'],1,'8 + 2 = 10.'],['What is an overflow error?',['A result too big for the available bits','A negative result','A missing carry bit'],0,'The answer does not fit in the bits available.']],
+14:[['How many colours does 8-bit colour depth give?',['64','256','512'],1,'2^8 = 256.'],['Which unit is the largest?',['Megabyte','Gigabyte','Kilobyte'],1,'Gigabyte > megabyte > kilobyte.']],
+15:[['Which memory is volatile?',['RAM','ROM','SSD'],0,'RAM loses its contents when power is off.'],['What does the ALU do?',['Calculations and logic','Stores files','Controls the screen'],0,'ALU = Arithmetic Logic Unit.']],
+16:[['Which is a utility program?',['Anti-malware','Spreadsheet','Web browser'],0,'Utilities maintain and protect the computer.'],['Which is a low-level language?',['Python','Assembly','Java'],1,'Assembly is close to machine code.']],
+17:[['What does NOT 1 give?',['1','0','10'],1,'NOT flips the input.'],['XOR outputs 1 when...',['The inputs differ','Both inputs are 1','Both inputs are 0'],0,'XOR = exclusive OR: one input or the other, not both.']],
+18:[['Which device connects different networks?',['Router','Cable','Speaker'],0,'A router forwards data between networks.'],['Which protocol is used to send email?',['SMTP','FTP','HTTP'],0,'SMTP sends email.']],
+19:[['Which malware spreads across a network by itself?',['Worm','Spyware','Firewall'],0,'Worms self-replicate across networks.'],['Which scrambles data so it cannot be read without a key?',['Encryption','Phishing','Backup'],0,'Encryption protects data in transit and storage.']],
+20:[['Which is an environmental impact of technology?',['E-waste','Faster typing','Larger screens'],0,'Discarded devices create e-waste.'],['Which law covers unauthorised access to computer systems?',['Computer Misuse Act','Copyright law only','Health and Safety law'],0,'The Computer Misuse Act covers hacking.']]
+};
+const XF={
+0:[['What is a comment for?','It explains code to humans and is ignored when the program runs.'],['What is pseudocode?','A language-independent way of writing an algorithm.']],
+1:[['What is a presence check?','It checks that data has been entered.'],['What is scope?','The part of a program where a variable can be used.']],
+2:[['What does float("2.5") return?','The number 2.5.'],[`What does type(5) show?`,`<class 'int'>`]],
+3:[['What does 2 ** 4 give?','16.'],['What does len("hi") return?','2.']],
+4:[['What does not do?','Flips True to False and False to True.'],['What does elif mean?','Else if - tests another condition when earlier ones were false.']],
+5:[['What does break do?','Exits the loop immediately.'],['What does continue do?','Skips to the next iteration of the loop.']],
+6:[['How do you remove an item from a list?','a.remove(x), or del a[i] to remove by index.'],['What does a[-1] give?','The last item in the list.']],
+7:[['What is a return value?','The value a function sends back to where it was called.'],['What is a global variable?','One declared outside subprograms and visible everywhere.']],
+8:[['What is boundary test data?','Data at the edge of the valid range, e.g. 1 and 120.'],['What is a runtime error?','An error that crashes the program while it runs, e.g. dividing by zero.']],
+9:[['What does .split(",") do?','Splits a string into a list at each comma.'],['What does .strip() remove?','Leading and trailing whitespace, including the newline.']],
+10:[['Main advantage of binary search?','Far fewer comparisons on a large sorted list.'],['What is a swap in bubble sort?','Exchanging two neighbouring items that are in the wrong order.']],
+11:[['What is a nibble?','4 bits.'],['What is hex FF in denary?','255.']],
+12:[['What shape is a decision in a flowchart?','A diamond.'],['What is pattern recognition?','Spotting similarities or repeats so solutions can be reused.']],
+13:[['What is overflow?','A result too large to fit in the available bits.'],['What is 1 + 1 in binary?','10 (write 0, carry 1).']],
+14:[['How many colours with 4-bit colour depth?','2^4 = 16.'],['What is sample rate?','The number of sound samples taken per second (Hz).']],
+15:[['What is cache?','Small, fast memory that stores frequently used data near the CPU.'],['What is volatile memory?','Memory that loses its contents when the power is off.']],
+16:[['What does an interpreter do?','Translates and runs code line by line.'],['What does defragmentation do?','Rearranges file fragments on an HDD so they are stored together.']],
+17:[['What does a NOT gate do?','Inverts its input.'],['What does XOR output?','1 when the inputs are different.']],
+18:[['What is an IP address?','A number that identifies a device on a network.'],['What is a router?','A device that forwards data between networks.']],
+19:[['What is a brute-force attack?','Trying many passwords until one works.'],['What is encryption?','Scrambling data so it cannot be read without the key.']],
+20:[['What is AI bias?','Unfair results caused by biased training data.'],['Name one environmental impact of technology.','E-waste or data-centre energy use.']]
+};
+Object.keys(XQ).forEach(i=>XQ[i].forEach(a=>QUIZ[i].push({q:a[0],o:a[1],c:a[2],w:a[3]})));
+Object.keys(XF).forEach(i=>FLASH[i].push(...XF[i]));
+
+/* ================= STATE + HELPERS ================= */
+const $=s=>document.querySelector(s);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let done=ld("done",{}),notes=ld("notes",{}),mine=ld("mylinks",[]),goals=ld("goals",[]);
+let fcState=ld("fcState",{}),quizState=ld("quizState",{});
+let streakData=ld("streakData",{days:[],lastDate:null});
+let pomoState=ld("pomoState",{running:false,endTime:0,mode:"focus",focusCount:0});
+let py=null;
+
+/* ================= STUDY STREAK ================= */
+(function updateStreak(){
+  const today=new Date().toISOString().slice(0,10);
+  if(streakData.lastDate!==today){
+    const yest=new Date(Date.now()-864e5).toISOString().slice(0,10);
+    if(streakData.lastDate===yest) streakData.days.push(today);
+    else streakData.days=[today];
+    streakData.lastDate=today;
+    sv("streakData",streakData);
+  }
+  const n=streakData.days.length;
+  const st=$("#streakTxt"); if(st) st.textContent=n;
+})();
+
+/* ================= SIDEBAR ================= */
+const sideEl=$("#side"),openSideBtn=$("#openside");
+function setSide(hidden){sideEl.classList.toggle("hide",hidden);openSideBtn.hidden=!hidden;sv("sideHidden",hidden)}
+$("#tside").onclick=()=>setSide(true);
+openSideBtn.onclick=()=>setSide(false);
+setSide(ld("sideHidden",false));
+
+/* ================= THEME + SETTINGS ================= */
+const gear=$("#tgear"),settings=$("#settings");
+function openSettings(o){settings.hidden=!o;gear.setAttribute("aria-expanded",String(o))}
+gear.onclick=e=>{e.stopPropagation();openSettings(settings.hidden)};
+document.addEventListener("click",e=>{
+  if(settings.hidden)return;
+  if(settings.contains(e.target)||gear.contains(e.target))return;
+  openSettings(false);
+});
+const darkCb=$("#darkToggle");
+function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";darkCb.checked=dark;sv("theme",dark)}
+darkCb.onchange=()=>setTheme(darkCb.checked);
+(function initTheme(){
+  const saved=localStorage.getItem("theme");
+  if(saved!==null){setTheme(saved==="true")}
+  else{setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches)}
+})();
+const SW=["#2563eb","#0f766e","#7c3aed","#db2777","#ea580c","#16a34a","#dc2626"];
+function setAcc(c){const r=document.documentElement.style;if(!c){r.removeProperty("--acc");r.removeProperty("--onacc");$("#pick").value="#2563eb"}else{r.setProperty("--acc",c);const n=parseInt(c.slice(1),16),l=.299*(n>>16)+.587*((n>>8)&255)+.114*(n&255);r.setProperty("--onacc",l>150?"#111":"#fff");$("#pick").value=c}sv("accent",c||null)}
+$("#sw").innerHTML=SW.map(c=>`<button style="background:${c}" data-c="${c}" title="${c}" aria-label="Use colour ${c}"></button>`).join("");
+$("#sw").onclick=e=>{if(e.target.dataset.c)setAcc(e.target.dataset.c)};
+$("#pick").oninput=e=>setAcc(e.target.value);
+$("#resetc").onclick=()=>setAcc(null);
+setAcc(ld("accent",null));
+
+/* ================= EXPORT / IMPORT ================= */
+$("#expBtn").onclick=()=>{
+  const data={done,notes,mylinks:mine,goals,fcState,quizState,streakData,pomoState,
+    theme:ld("theme",null),accent:ld("accent",null),sideHidden:ld("sideHidden",false),
+    exam:ld("exam",""),dpw:ld("dpw",4)};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="igcse-cs-progress-"+new Date().toISOString().slice(0,10)+".json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+$("#impBtn").onclick=()=>$("#impFile").click();
+$("#impFile").onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      ["done","notes","fcState","quizState","goals","streakData","pomoState"].forEach(k=>{if(d[k]!==undefined)localStorage.setItem(k,JSON.stringify(d[k]))});
+      if(d.mylinks!==undefined)localStorage.setItem("mylinks",JSON.stringify(d.mylinks));
+      if(d.theme!==undefined)localStorage.setItem("theme",JSON.stringify(d.theme));
+      if(d.accent!==undefined)localStorage.setItem("accent",JSON.stringify(d.accent));
+      if(d.sideHidden!==undefined)localStorage.setItem("sideHidden",JSON.stringify(d.sideHidden));
+      if(d.exam!==undefined)localStorage.setItem("exam",JSON.stringify(d.exam));
+      if(d.dpw!==undefined)localStorage.setItem("dpw",JSON.stringify(d.dpw));
+      location.reload();
+    }catch(err){alert("Could not read that file.")}
+  };
+  r.readAsText(f);
+};
+
+/* ================= POMODORO ================= */
+const FOCUS=25*60, BREAK=5*60;
+let pomoInterval=null;
+function pomoRender(){
+  const p=$("#pomo"),m=$("#pomoMode"),t=$("#pomoTime");
+  const rem=pomoState.running?Math.max(0,Math.round((pomoState.endTime-Date.now())/1000)):
+    (pomoState.mode==="focus"?FOCUS:BREAK);
+  const mm=String(Math.floor(rem/60)).padStart(2,"0"),ss=String(rem%60).padStart(2,"0");
+  t.textContent=mm+":"+ss;
+  m.textContent=pomoState.mode==="focus"?"Focus":"Break";
+  p.classList.toggle("running",pomoState.running);
+  p.classList.toggle("break",pomoState.mode==="break");
+  $("#focusTxt").textContent=pomoState.focusCount||0;
+}
+function pomoTick(){
+  if(!pomoState.running)return;
+  if(Date.now()>=pomoState.endTime){
+    if(pomoState.mode==="focus"){
+      pomoState.focusCount=(pomoState.focusCount||0)+1;
+      pomoState.mode="break";
+      pomoState.endTime=Date.now()+BREAK*1000;
+      try{new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=").play()}catch(e){}
+    }else{
+      pomoState.mode="focus";
+      pomoState.running=false;
+      pomoState.endTime=0;
+      try{new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=").play()}catch(e){}
+    }
+    sv("pomoState",pomoState);
+  }
+  pomoRender();
+}
+$("#pomo").onclick=e=>{
+  if(e.target.id==="pomoReset"){
+    pomoState.running=false;pomoState.mode="focus";pomoState.endTime=0;sv("pomoState",pomoState);pomoRender();
+    return;
+  }
+  if(pomoState.running){pomoState.running=false;sv("pomoState",pomoState)}
+  else{pomoState.running=true;pomoState.endTime=Date.now()+(pomoState.mode==="focus"?FOCUS:BREAK)*1000;sv("pomoState",pomoState)}
+  pomoRender();
+};
+$("#pomoReset").onclick=e=>{e.stopPropagation();
+  pomoState.running=false;pomoState.mode="focus";pomoState.endTime=0;sv("pomoState",pomoState);pomoRender();
+};
+pomoRender();
+pomoInterval=setInterval(pomoTick,1000);
+
+/* ================= EXAM COUNTDOWN PILL ================= */
+function renderCountdown(){
+  const ex=$("#exam").value, pill=$("#cdPill");
+  if(!ex){pill.textContent="📅 Set exam date";pill.classList.remove("urgent");return}
+  const days=Math.ceil((new Date(ex)-new Date().setHours(0,0,0,0))/864e5);
+  if(days<0){pill.textContent="📅 Exam passed";pill.classList.remove("urgent");return}
+  pill.textContent="⏳ "+(days===0?"Exam today!":days+" day"+(days===1?"":"s")+" to exam");
+  pill.classList.toggle("urgent",days<=14);
+}
+
+/* ================= STATIC PANELS ================= */
+$("#cwList").innerHTML=CW.map(c=>`<div><b>${esc(c[0])}</b><small>${esc(c[1])}</small></div>`).join("");
+$("#frmList").innerHTML=FORMULAS.map(f=>`<div><b>${esc(f[0])}</b><code>${esc(f[1])}</code></div>`).join("");
+function renderGlossary(){
+  const q=($("#gsearch").value||"").toLowerCase();
+  const list=GLOSSARY.filter(g=>!q||g[0].toLowerCase().includes(q)||g[1].toLowerCase().includes(q));
+  $("#glz").innerHTML=list.map(g=>`<div><b>${esc(g[0])}</b><small>${esc(g[1])}</small></div>`).join("");
+}
+$("#gsearch").oninput=renderGlossary;
+renderGlossary();
+
+/* ================= LINKS + TOPIC RENDER ================= */
+function linkHTML(){return SITES.concat(mine.map(l=>[l[0],"Your link",l[1]]))}
+function topicLinks(th){
+  const a=[["BBC Bitesize",SITES[0][2]],["Save My Exams",SITES[1][2]],["Isaac CS",SITES[4][2]]];
+  if(!th)a.push(["W3Schools Python",SITES[3][2]]);
+  return a.concat(mine.map(l=>[l[0],l[1]])).map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join("");
+}
+function topicsForWeak(){
+  const w=[];
+  T.forEach((t,i)=>{
+    const q=quizState[i];
+    if(q&&q.lastScore!==undefined&&q.lastScore<0.6)w.push({i,t,score:q.lastScore});
+  });
+  return w;
+}
+function renderWeak(){
+  const list=topicsForWeak();
+  const el=$("#weak");
+  if(!list.length){el.innerHTML="";return}
+  el.innerHTML=`<div class="panel" style="border-color:rgba(220,38,38,.35);background:color-mix(in srgb,var(--card) 92%,#dc2626)">
+    <h2 style="margin-bottom:8px">⚠ Focus on these</h2>
+    <p class="sub" style="margin:0 0 10px;font-size:13px">Last quiz score below 60% — revisit, then re-quiz.</p>
+    <div class="row">${list.map(x=>`<button class="btn" data-jump="${x.i}">${esc(x.t.t)} · ${Math.round(x.score*100)}%</button>`).join("")}</div>
+  </div>`;
+}
+function render(){
+  $("#topics").innerHTML=T.map((x,i)=>{
+    const fc=fcState[i]||{},qz=quizState[i]||{};
+    const fcMastered=Object.values(fc).filter(c=>c.lv>=2).length;
+    const fcTotal=(FLASH[i]||[]).length;
+    const qzScore=qz.lastScore!==undefined?Math.round(qz.lastScore*100)+"%":"—";
+    return `<section class="t${done[i]?" done":""}" id="t${i}">
+      <h2>${i+1}. ${x.t}</h2>
+      <ul>${x.p.map(p=>`<li>${p}</li>`).join("")}</ul>
+      ${x.ps?`<h4>Edexcel pseudocode</h4><pre>${esc(x.ps)}</pre>`:""}
+      ${x.c?`<h4>Python code (editable and executable)</h4><textarea class="c" spellcheck="false" id="c${i}">${esc(x.c)}</textarea><div class="out" id="o${i}"></div><div class="row"><button class="p" data-run="${i}">Run code</button><button data-copy="${i}">Copy</button></div>`:""}
+      ${x.m?`<div class="mist"><b>Common mistake:</b> ${x.m}</div>`:""}
+      ${x.tip?`<div class="mist"><b>Exam tip:</b> ${x.tip}</div>`:""}
+      <div class="topic-actions">
+        <button class="p" data-fc="${i}">🃏 Flashcards (${fcMastered}/${fcTotal})</button>
+        <button class="p" data-qz="${i}">❓ Quiz ${qz.attempts?`· best ${qzScore}`:""}</button>
+        <button data-done="${i}">${done[i]?"✓ Done":"Mark as done"}</button>
+        <span class="badge${done[i]?" done":""}">${done[i]?"Completed":"In progress"}</span>
+      </div>
+      <h4>Links</h4><div class="links">${topicLinks(x.th)}</div>
+      <h4>My notes</h4><textarea class="notes" data-n="${i}" placeholder="Write in your own words...">${esc(notes[i]||"")}</textarea>
+    </section>`;
+  }).join("");
+  $("#idx").innerHTML=T.map((x,i)=>`<a href="#t${i}">${i+1}. ${x.t.replace("Theory: ","")}</a>`).join("");
+  const rl=linkHTML();
+  $("#reslinks").innerHTML=rl.map(l=>`<a href="${l[2]}" target="_blank" rel="noopener">${esc(l[0])}<small>${esc(l[1])}</small></a>`).join("");
+  $("#sidelinks").innerHTML=rl.map(l=>`<a href="${l[2]}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join("");
+  stats();renderWeak();
+}
+function stats(){
+  const n=Object.values(done).filter(Boolean).length;
+  $("#count").textContent=n+" of "+T.length+" topics completed";
+  $("#bar").style.width=(n/T.length*100)+"%";
+  const ex=$("#exam").value,left=T.length-n;
+  if(ex){
+    const days=Math.ceil((new Date(ex)-new Date().setHours(0,0,0,0))/864e5);
+    if(days<0){$("#planout").textContent="That exam date has passed.";renderCountdown();return}
+    const sessions=Math.max(1,Math.floor(days/7*(+$("#dpw").value||4)));
+    $("#planout").textContent=days+" days to go. "+left+" topics left, so aim for about "+Math.ceil(left/sessions*10)/10+" topics per study day ("+sessions+" study days available).";
+  }else $("#planout").textContent="Pick your exam date to see how many topics to cover each study day.";
+  renderCountdown();
+}
+function goalsRender(){
+  $("#goals").innerHTML=goals.map((g,i)=>`<li><label><input type="checkbox" data-g="${i}" ${g.d?"checked":""}> <span style="${g.d?"text-decoration:line-through;color:var(--mute)":""}">${esc(g.t)}</span></label> <button data-gx="${i}" aria-label="Delete goal">x</button></li>`).join("");
+}
+
+/* ================= RESOURCES MODAL ================= */
+function renderResources(){$("#resgrid").innerHTML=RES.map(r=>`<a href="${r[2]}" target="_blank" rel="noopener"><b>${esc(r[0])}</b><small>${esc(r[1])}</small><em>${esc(r[3])}</em></a>`).join("")}
+function openResources(){const m=$("#resmodal");m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
+function closeResources(){const m=$("#resmodal");m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow=""}
+function checkAllDone(){
+  if(Object.values(done).filter(Boolean).length<T.length)return;
+  try{if(sessionStorage.getItem("resShown")==="1")return;sessionStorage.setItem("resShown","1")}catch(e){}
+  setTimeout(openResources,450);
+}
+
+/* ================= PYTHON RUNNER ================= */
+async function run(i){
+  const o=$("#o"+i);o.style.display="block";o.textContent="Loading Python (first run takes a few seconds)...";
+  try{
+    if(!py){py=await loadPyodide();py.runPython("import builtins,js\nbuiltins.input=lambda p='':js.prompt(p) or ''")}
+    let out="";py.setStdout({batched:s=>out+=s+"\n"});py.setStderr({batched:s=>out+=s+"\n"});
+    await py.runPythonAsync($("#c"+i).value);o.textContent=out||"(no output)";
+  }catch(e){o.textContent=String(e.message||e).split("\n").slice(-4).join("\n")}
+}
+
+/* ================= FLASHCARDS ================= */
+let fcTopic=null,fcQueue=[],fcIdx=0,fcFlipped=false;
+function openFlash(ti){
+  fcTopic=ti;
+  const st=fcState[ti]||{};
+  fcQueue=(FLASH[ti]||[]).map((_,i)=>i).sort((a,b)=>(st[a]?.lv||0)-(st[b]?.lv||0));
+  fcIdx=0;fcFlipped=false;
+  renderFlash();
+  $("#fcmodal").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeFlash(){$("#fcmodal").classList.remove("open");document.body.style.overflow=""}
+function renderFlash(){
+  const ti=fcTopic,cards=FLASH[ti]||[];
+  if(!cards.length||fcIdx>=fcQueue.length){
+    const mastered=Object.values(fcState[ti]||{}).filter(c=>c.lv>=2).length;
+    $("#fchead").textContent="Flashcards · done";
+    $("#fcsub").textContent="";
+    $("#fcbody").innerHTML=`<div class="fc"><div class="fc-inner"><div class="fc-face fc-front" style="position:static">🎉 Session complete<br><small style="color:var(--mute);font-size:13px;display:block;margin-top:8px">${mastered}/${cards.length} mastered · come back tomorrow</small></div></div></div>`;
+    $("#fcfoot").innerHTML=`<button class="btn p" data-close2>Done</button>`;
+    return;
+  }
+  const ci=fcQueue[fcIdx],card=cards[ci];
+  const total=cards.length,mastered=Object.values(fcState[ti]||{}).filter(c=>c.lv>=2).length;
+  $("#fchead").textContent="Flashcards";
+  $("#fcsub").innerHTML=`${esc(T[ti].t)} · card ${fcIdx+1} of ${fcQueue.length} · mastered ${mastered}/${total}`;
+  $("#fcbody").innerHTML=`<div class="fc${fcFlipped?" flipped":""}" id="fcCard">
+    <div class="fc-inner">
+      <div class="fc-face fc-front">${esc(card[0])}</div>
+      <div class="fc-face fc-back">${esc(card[1])}</div>
+    </div></div>
+    <div class="sub" style="text-align:center;font-size:12px;margin-top:10px">Tap the card to flip</div>`;
+  $("#fcfoot").innerHTML=`
+    <button class="btn" data-fcrate="again">Again</button>
+    <button class="btn" data-fcrate="good">Good</button>
+    <button class="btn p" data-fcrate="easy">Easy</button>`;
+  $("#fcCard").onclick=()=>{fcFlipped=!fcFlipped;$("#fcCard").classList.toggle("flipped",fcFlipped)};
+}
+function rateFlash(r){
+  if(!fcTopic||fcIdx>=fcQueue.length)return;
+  const ci=fcQueue[fcIdx];
+  fcState[fcTopic]=fcState[fcTopic]||{};
+  const st=fcState[fcTopic][ci]||{lv:0};
+  if(r==="again"){st.lv=0;fcQueue.push(ci)}
+  else if(r==="good"){st.lv=Math.min(2,(st.lv||0)+1)}
+  else{st.lv=2}
+  fcState[fcTopic][ci]=st;
+  sv("fcState",fcState);
+  fcIdx++;fcFlipped=false;
+  renderFlash();
+  const y=scrollY;render();scrollTo(0,y);
+}
+
+/* ================= QUIZ ================= */
+let qzTopic=null,qzAns={},qzChecked=false;
+function openQuiz(ti){qzTopic=ti;qzAns={};qzChecked=false;renderQuiz();$("#qzmodal").classList.add("open");document.body.style.overflow="hidden"}
+function closeQuiz(){$("#qzmodal").classList.remove("open");document.body.style.overflow=""}
+function renderQuiz(){
+  const ti=qzTopic,qs=QUIZ[ti]||[];
+  $("#qzhead").textContent="Quiz · "+(T[ti]?.t||"");
+  if(!qs.length){$("#qzbody").innerHTML="<p>No quiz for this topic.</p>";$("#qzfoot").innerHTML="";return}
+  const best=quizState[ti]?.lastScore;
+  $("#qzsub").innerHTML=`Pick one answer per question${best!==undefined?` · last score ${Math.round(best*100)}%`:""}`;
+  $("#qzbody").innerHTML=qs.map((q,qi)=>{
+    const chosen=qzAns[qi];
+    return `<div class="q" data-q="${qi}"><p>${qi+1}. ${esc(q.q)}</p>
+      ${q.o.map((o,oi)=>{
+        let cls="opt";
+        if(qzChecked){
+          if(oi===q.c)cls+=" right";
+          else if(chosen===oi)cls+=" wrong";
+        }else if(chosen===oi)cls+=" sel";
+        return `<button class="${cls}" data-qzpick="${qi}:${oi}">${esc(o)}</button>`;
+      }).join("")}
+      ${qzChecked?`<div class="why"><b>${chosen===q.c?"✓ Correct":"✗ Correct answer: "+esc(q.o[q.c])}</b> — ${esc(q.w)}</div>`:""}
+    </div>`;
+  }).join("");
+  $("#qzfoot").innerHTML=qzChecked
+    ?`<button class="btn" data-qzagain>Try again</button><button class="btn p" data-close2>Close</button>`
+    :`<button class="btn p" id="qzCheck">Check answers</button>`;
+}
+function checkQuiz(){
+  const ti=qzTopic,qs=QUIZ[ti]||[];
+  if(Object.keys(qzAns).length<qs.length){alert("Answer every question first.");return}
+  let score=0;
+  qs.forEach((q,i)=>{if(qzAns[i]===q.c)score++});
+  const pct=score/qs.length;
+  quizState[ti]=quizState[ti]||{attempts:0};
+  quizState[ti].attempts=(quizState[ti].attempts||0)+1;
+  quizState[ti].lastScore=pct;
+  quizState[ti].best=Math.max(quizState[ti].best||0,pct);
+  sv("quizState",quizState);
+  qzChecked=true;
+  renderQuiz();
+  const y=scrollY;render();scrollTo(0,y);
+}
+
+/* ================= MAIN CLICK HANDLER ================= */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button,a");
+  const d=b?.dataset||{};
+
+  if(d.close!==undefined){closeResources();return}
+  if(d.close2!==undefined){closeFlash();closeQuiz();return}
+  if(e.target.id==="resmodal"){closeResources();return}
+
+  if(d.run!==undefined){run(d.run);return}
+  if(d.copy!==undefined){navigator.clipboard?.writeText($("#c"+d.copy).value);return}
+  if(d.done!==undefined){
+    done[d.done]=!done[d.done];sv("done",done);
+    const y=scrollY;render();scrollTo(0,y);
+    checkAllDone();
+    return;
+  }
+  if(d.gx!==undefined){goals.splice(d.gx,1);sv("goals",goals);goalsRender();return}
+  if(d.fc!==undefined){openFlash(+d.fc);return}
+  if(d.qz!==undefined){openQuiz(+d.qz);return}
+  if(d.fcrate){rateFlash(d.fcrate);return}
+  if(d.qzpick){
+    if(qzChecked)return;
+    const [qi,oi]=d.qzpick.split(":").map(Number);
+    qzAns[qi]=oi;
+    renderQuiz();
+    return;
+  }
+  if(e.target.id==="qzCheck"){checkQuiz();return}
+  if(d.qzagain!==undefined){qzAns={};qzChecked=false;renderQuiz();return}
+  if(d.jump!==undefined){$("#t"+d.jump).scrollIntoView({behavior:"smooth",block:"start"});return}
+});
+
+document.addEventListener("input",e=>{
+  const d=e.target.dataset||{};
+  if(d.n!==undefined){notes[d.n]=e.target.value;sv("notes",notes)}
+  if(d.g!==undefined){goals[d.g].d=e.target.checked;sv("goals",goals);goalsRender()}
+});
+
+/* ================= KEYBOARD SHORTCUTS ================= */
+let curTopic=0;
+document.addEventListener("keydown",e=>{
+  if(e.target.matches("input,textarea"))return;
+  if(e.key==="Escape"){closeResources();closeFlash();closeQuiz();openSettings(false);$("#kbd").classList.remove("open");return}
+  if(e.key==="?"){$("#kbd").classList.toggle("open");return}
+  if(e.key==="d"){const s=$("#t"+curTopic);if(s){done[curTopic]=!done[curTopic];sv("done",done);const y=scrollY;render();scrollTo(0,y);checkAllDone()}return}
+  if(e.key==="f"){openFlash(curTopic);return}
+  if(e.key==="q"){openQuiz(curTopic);return}
+  if(e.key==="j"||e.key==="k"){
+    curTopic=Math.max(0,Math.min(T.length-1,curTopic+(e.key==="j"?1:-1)));
+    $("#t"+curTopic).scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
+});
+
+/* ================= PANEL CONTROLS ================= */
+$("#addgoal").onclick=()=>{const v=$("#goal").value.trim();if(v){goals.push({t:v,d:false});sv("goals",goals);$("#goal").value="";goalsRender()}};
+$("#addlink").onclick=()=>{let n=$("#ln").value.trim(),u=$("#lu").value.trim();if(!n||!u)return;if(!/^https?:\/\//i.test(u))u="https://"+u;mine.push([n,u]);sv("mylinks",mine);$("#ln").value=$("#lu").value="";render()};
+$("#exam").value=ld("exam","");$("#dpw").value=ld("dpw",4);
+$("#exam").onchange=()=>{sv("exam",$("#exam").value);stats()};
+$("#dpw").oninput=()=>{sv("dpw",$("#dpw").value);stats()};
+$("#tres").onclick=openResources;
+
+/* ================= PWA MANIFEST ================= */
+(function addManifest(){
+  try{
+    const manifest={name:"IGCSE Computer Science",short_name:"IGCSE CS",start_url:".",display:"standalone",
+      background_color:"#ffffff",theme_color:"#10a37f",icons:[]};
+    const blob=new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
+    const link=document.createElement("link");
+    link.rel="manifest";
+    link.href=URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  }catch(e){}
+})();
+
+/* ================= BOOT ================= */
+renderResources();
+render();
+goalsRender();
+checkAllDone();
+</script>
+</body>
+</html>
